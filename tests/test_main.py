@@ -19,5 +19,9 @@ def test_query():
             ] == value
 
 
-if __name__ == '__main__':
+def main():
     test_query()
+
+
+if __name__ == '__main__':
+    main()
