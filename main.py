@@ -14,14 +14,30 @@ def query(data: DataType, selector: ModifierFunc,
     :param filters: Any number of results of `field_filter` function calls
     :return: Filtered data
     """
-    pass
+    field = selector(data)
+    for row in filters:
+        row(field)
+    return field
 
 
 def select(*columns: str) -> ModifierFunc:
     """Return function that selects only specific columns from dataset"""
-    pass
+    def selector(collection):
+        lst = []
+        for i in collection:
+            some_dict = {}
+            for j in columns:
+                some_dict.update({j: i[j]})
+            lst.append(some_dict)
+        return lst
+    return selector
 
 
 def field_filter(column: str, *values: Any) -> ModifierFunc:
     """Return function that filters specific column to be one of `values`"""
-    pass
+    def remover(collection):
+        for row in collection:
+            if row[column] not in values:
+                collection.remove(row)
+        return collection
+    return remover
